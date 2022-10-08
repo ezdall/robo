@@ -2,6 +2,7 @@ import React from 'react';
 //
 import SearchBox from '../components/search-box.comp';
 import CardList from '../components/card-list.comp';
+import Scroll from '../components/scroll.comp';
 import ErrorBoundry from '../components/error-boundry.comp';
 
 //
@@ -44,8 +45,8 @@ export default class App extends React.Component {
   render() {
     const { robots, searchField, isLoading, error } = this.state;
 
-    const filterRobots = robots.filter(r => {
-      return r.name.toLowerCase().includes(searchField.toLowerCase());
+    const filterRobots = robots.filter(robo => {
+      return robo.name.toLowerCase().includes(searchField.toLowerCase());
     });
 
     console.log(searchField);
@@ -67,9 +68,15 @@ export default class App extends React.Component {
           searchField={searchField}
           onSearchChange={this.onSearchChange}
         />
-        <ErrorBoundry>
-          <CardList robots={filterRobots} />
-        </ErrorBoundry>
+        <Scroll>
+          <ErrorBoundry>
+            {filterRobots.length ? (
+              <CardList robots={filterRobots} />
+            ) : (
+              <div>doesn&apos;t exist</div>
+            )}
+          </ErrorBoundry>
+        </Scroll>
       </div>
     );
   }
