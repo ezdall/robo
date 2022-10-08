@@ -4,8 +4,8 @@ import ReactDOM from 'react-dom';
 import { robotData } from './robots';
 
 import './bootstrap.min.css';
-import 'tachyons';
-// import './index.css';
+import 'tachyons'; // https://tachyons.io/docs/
+import './index.css';
 //
 import App from './containers/App';
 
