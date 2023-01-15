@@ -37,9 +37,9 @@ export const robotData = [
   },
   {
     id: 7,
-    name: 'Junjun Doe',
-    username: 'Junjun',
-    email: 'junjun@email.com'
+    name: 'Jun Doe',
+    username: 'Jun',
+    email: 'jun@email.com'
   },
   {
     id: 8,
