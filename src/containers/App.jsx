@@ -1,6 +1,6 @@
 import React from 'react';
 //
-import SearchBox from '../components/seach-box.comp';
+import SearchBox from '../components/search-box.comp';
 import CardList from '../components/card-list.comp';
 import ErrorBoundry from '../components/error-boundry.comp';
 
@@ -12,29 +12,37 @@ export default class App extends React.Component {
     super(props);
     this.state = {
       robots: [],
-      searchField: ''
+      searchField: '',
+      error: null,
+      isLoading: false
     };
 
     this.onSearchChange = this.onSearchChange.bind(this);
   }
 
   componentDidMount() {
-    const { robots } = this.props;
+    // during loading
+    this.setState({ isLoading: true });
 
-    // input-from: props
-    // returns object w/ 'robots', { robots:[...] }
-    this.setState(() => ({ robots }));
+    // input-from: online-fake-api
+    fetch('https://jsonplaceholder.typicode.com/users')
+      .then(resp => resp.json())
+      .then(users => this.setState({ robots: users, isLoading: false }))
+      .catch(error => this.setState({ error, isLoading: false }));
+
+    // input-from: using local-data, props
+    // this.setState(() => ({ robots }));
   }
 
   onSearchChange(ev) {
     const { value } = ev.target;
 
-    // input-from: input-search-box, event
+    // input-from: search-box event
     this.setState({ searchField: value });
   }
 
   render() {
-    const { robots, searchField } = this.state;
+    const { robots, searchField, isLoading, error } = this.state;
 
     const filterRobots = robots.filter(r => {
       return r.name.toLowerCase().includes(searchField.toLowerCase());
@@ -42,8 +50,19 @@ export default class App extends React.Component {
 
     console.log(searchField);
 
+    // during loading
+    if (isLoading) {
+      return <h1 className="tc f1">Loading...</h1>;
+    }
+
     return (
-      <>
+      <div className="tc">
+        {!isLoading && error ? (
+          <h1 className="tc f1 red">ERROR! </h1>
+        ) : (
+          <h1 className="f1">Success! - Robo List</h1>
+        )}
+
         <SearchBox
           searchField={searchField}
           onSearchChange={this.onSearchChange}
@@ -51,7 +70,7 @@ export default class App extends React.Component {
         <ErrorBoundry>
           <CardList robots={filterRobots} />
         </ErrorBoundry>
-      </>
+      </div>
     );
   }
 }
