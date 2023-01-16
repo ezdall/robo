@@ -2,7 +2,7 @@ import React from 'react';
 
 export default function Card({ id, name, email }) {
   return (
-    <div className="bg-light-blue dib br3 pa3 ma2 grow">
+    <div className="bg-light-blue dib br4 pa3 ma2 grow">
       <img
         src={`https://robohash.org/${id}?size=150x150&bgset=bg2&set=any`}
         alt={`robot ${id}`}
